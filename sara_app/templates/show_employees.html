@@ -1,0 +1,15 @@
+{% extends 'admin_main.html' %}
+
+{% block content %}
+
+{% for sts in st %}
+
+{{sts.id}},{{sts.name}},{{sts.email}}, {{sts.phone}}
+<br>
+{% endfor %}
+
+</tbody>
+</table>
+
+
+{% endblock content %}

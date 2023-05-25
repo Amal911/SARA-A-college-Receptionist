@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
+    <title>Chatbot</title>
+    <style>
+      #main{
+        position: relative;
+      }
+      .mouth{
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        border-radius: 1%;
+        border-color: white;
+        
+        
+      }
+      
+
+
+
+
+
+
+
+
+
+    </style>
+    
+  </head>
+  <body>
+    <div class="background">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+
+      <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col-6">
+          <div id="main">
+            
+              <img src="{% static 'chatbot.gif' %}" alt="" height="424px" width="auto">
+            
+            
+          <div class="mouth">
+            <img id="gif" class="mouth" src="{% static 'talking.gif' %}" alt="" height="424px" width="auto">
+          </div>
+            
+          </div>
+        </div>
+        <div class="col" >
+          <div class="cards">
+            <h1>cards</h1>
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="subtitles"  >
+          
+    <form id="chatbot-form">
+      
+      <input type="text" id="message" name="message" class="form-control">
+      <button type="submit" class="btn">Send</button>
+      <button id="record_button" class="btn"><i class="ri-mic-fill"></i></button>
+      <button type="button" class="btn btn-primary btn-sm" name="button_mark">Mark Attendance</button>
+    </form>
+
+    <div id="chatbot-response"></div>
+
+    </div>
+    
+
+    
+    
+    
+  </div>
+
+
+	<div id="result"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      
+      var recordButton = document.getElementById('record_button');
+      $(document).ready(function() {
+        $('#chatbot-form').on('submit', function(event) {
+          event.preventDefault();
+          
+          var message = $('#message').val();
+          $.ajax({
+            url: '/chatbot/',
+            data: {message: message},
+            dataType: 'json',
+            success: function(response) {
+              
+              $('#chatbot-response').append('<p>' + response.message + '</p>');
+
+            }
+          })
+          });
+          $('#message').val('');
+        });
+      
+
+      recordButton.onclick = record;
+      function record(){
+        var message = 'record';
+        
+    $.ajax({
+      url: '/chatbot/',
+      data: {message: message},
+      dataType: 'json',
+      success: function(response) {
+      $('#chatbot-response').empty();
+        
+        $('#chatbot-response').append('<p>' + response.message + '</p>');
+
+        var msg = new SpeechSynthesisUtterance(response.message);
+
+        msg.voice = window.speechSynthesis.getVoices().find(function(voice) {
+        return voice.name === 'Google UK English Female';
+      });
+      $('#gif').show();
+        window.speechSynthesis.speak(msg);
+
+        msg.onend = function() {
+        
+        $('#gif').hide();
+        record();
+      };
+        
+        
+      }
+    });
+      }
+
+
+    </script>
+   
+    
+    
+  </body>
+</html>

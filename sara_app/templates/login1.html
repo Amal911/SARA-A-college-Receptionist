@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static '/CSS/loginstyle.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="login">
+      <div class="avatar">
+        <img src="{% static 'image/avatar.png' %}" alt="">
+      </div>
+      <h2>Admin Login</h2>
+      <h3>Please enter your login and password!</h3>
+      <form class="login-form"  method="post">
+        {% csrf_token %}
+        <div class="textbox">
+          {{ form.as_p }}
+        </div>
+        <button type="submit" name="button">LOGIN</button>
+
+      </form>
+    </div>
+  </body>
+</html>

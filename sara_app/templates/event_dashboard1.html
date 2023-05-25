@@ -1,0 +1,67 @@
+{% extends 'admin_main.html' %}
+
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+      a:link {
+        text-decoration: none;
+      }
+  
+        .card {
+                 width: 190px;
+                 height: 100px;
+                 border-radius: 50px;
+                 background: #e0e0e0;
+                 box-shadow: 20px 20px 60px #bebebe,
+                 -20px -20px 60px #ffffff;
+
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+
+               }
+  
+
+      header {
+      left: 0px;
+      right: 0px;
+    }
+    </style>
+  </head>
+<br><br>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-xl-3">
+        <div class="card bg-c-blue order-card">
+          <div class="card-block">
+            <h6 class="m-b-20"> <a href="/add_events" style="text-decoration: none; color:black;">Add Event</a> </h6>
+            
+            
+          </div>
+        </div>
+      </div>
+  
+
+  
+      <div class="col-md-4 col-xl-3">
+        <div class="card bg-c-yellow order-card">
+          <div class="card-block">
+            <h6 class="m-b-20"><a href="" style="text-decoration: none; color:black;">View Events</a></h6>
+           
+            
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      {% endblock content %}

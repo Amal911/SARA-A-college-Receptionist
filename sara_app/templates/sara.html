@@ -1,0 +1,196 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>AI Receptionist</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+      <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+
+<!--    <link rel="stylesheet" href="sara_app/templates/css/stylesheet.css">-->
+<link rel="stylesheet" href="{% static 'CSS/stylesheet.css' %}">
+  </head>
+  <body>
+
+      <div class="exit">
+        <button type="button" id="exit" class="btn"name="button"><i class="ri-logout-box-line"></i></button>
+      </div>
+
+        <script>
+    $(document).ready(function() {
+        $('#exit').click(function() {
+            window.location.href = "{% url 'main' %}";
+        });
+    });
+</script>
+
+      <div class="row">
+          <div class="col-lg-3"></div>
+        <div class="col-lg-6 sec1">
+            <div id="main">
+
+              <img class="face" src="{% static 'chatbot.gif' %}" alt="" height="424px" width="auto">
+
+
+          <div class="mouth">
+            <img id="gif" class="mouth" src="{% static 'talking.gif' %}" alt="" height="424px" width="auto">
+          </div>
+
+          </div>
+<!--          <div class="avatar">-->
+<!--            <img class="voice" src="{% static 'voice2.gif' %}" alt="">-->
+<!--          </div>-->
+        </div>
+        <div class="col-lg-3  sec2" >
+          <div class="cards">
+<!--            <h1>cards</h1>-->
+          </div>
+        </div>
+      </div>
+
+      <div class="subtitles">
+<!--        <form id="chatbot-form">-->
+<!--&lt;!&ndash;          <label for="message">Message:</label>&ndash;&gt;-->
+<!--          <input type="text" id="message" class="form-control" style="display: inline; width: 40%; text-align: center;" name="message" >-->
+<!--          <button type="submit" class="btn" style=" margin-bottom: 5px; font-size: 30px; font-weight: bold; color: #ffff; border-radius: 50%;"><i class="ri-mic-fill"></i></button>-->
+<!--        </form>-->
+        <div id="chatbot-response" class="response">
+        </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<section class="section2">
+  <div class="row ">
+    <div class=" record">
+      <button type="button" id="record_button" class="btn btn-lg rec_btn"><i class="ri-mic-fill"></i></button>
+    </div>
+    <div class="col input">
+      <form id="chatbot-form">
+        <!-- <label for="message">Message:</label> -->
+        <input type="text" id="message" class="form-control" name="message">
+      </form>
+    </div>
+    <!-- <div class="col-lg-6">
+
+    </div> -->
+    <div class="col-lg-1 attendance" >
+      <button type="button" id="mark_attendance" class="btn  mark_attendance" name="button"><i class="ri-account-pin-box-fill"></i></button>
+    </div>
+  </div>
+</section>
+
+        <script>
+
+        </script>
+        <script>
+            $('#chatbot-response').empty();
+           $(document).ready(function() {
+            $('#chatbot-form').on('submit', function(event) {
+              event.preventDefault();
+              var message = $('#message').val();
+<!--              document.getElementById("chatbot-form").reset();-->
+              $.ajax({
+                url: '/chatbot/',
+                data: {message: message},
+                dataType: 'json',
+                success: function(response) {
+                  $('#chatbot-response').empty();
+                  $('#chatbot-response').append(response.message);
+
+                  var msg = new SpeechSynthesisUtterance(response.message);
+                  msg.voice = window.speechSynthesis.getVoices().find(function(voice) {
+                  return voice.name === 'Google UK English Female';
+                  });
+<!--                  window.speechSynthesis.speak(msg);-->
+                   $('#gif').show();
+                    window.speechSynthesis.speak(msg);
+
+                    msg.onend = function() {
+
+                  $('#gif').hide();
+<!--                record();-->
+                };
+                }
+              });
+
+              $('#message').val('');
+            });
+          });
+        </script>
+        <script>
+
+        </script>
+
+
+          <script>
+        var recordButton = document.getElementById('record_button');
+        recordButton.onclick = record;
+        function record(){
+        var message = 'record';
+
+    $.ajax({
+      url: '/chatbot/',
+      data: {message: message},
+      dataType: 'json',
+      success: function(response) {
+       $('#chatbot-response').empty();
+
+        $('#chatbot-response').append('<p>' + response.message + '</p>');
+        var msg = new SpeechSynthesisUtterance(response.message);
+        msg.voice = window.speechSynthesis.getVoices().find(function(voice) {
+        return voice.name === 'Google UK English Female';
+        });
+<!--        window.speechSynthesis.speak(msg);-->
+   $('#gif').show();
+        window.speechSynthesis.speak(msg);
+
+        msg.onend = function() {
+
+        $('#gif').hide();
+        record();
+      };
+        record();
+      }
+    });
+      }
+        </script>
+        <script>
+        var mark_attendanceButton = document.getElementById('mark_attendance');
+        mark_attendanceButton.onclick = mark_attendance;
+        function mark_attendance(){
+        var message = 'mark_attendance';
+
+    $.ajax({
+      url: '/chatbot/',
+      data: {message: message},
+      dataType: 'json',
+      success: function(response) {
+       $('#chatbot-response').empty();
+
+        $('#chatbot-response').append('<p>' + response.message + '</p>');
+
+        var msg = new SpeechSynthesisUtterance(response.message);
+        msg.voice = window.speechSynthesis.getVoices().find(function(voice) {
+        return voice.name === 'Google UK English Female';
+        });
+        <!---->window.speechSynthesis.speak(msg);
+           $('#gif').show();
+        window.speechSynthesis.speak(msg);
+
+        msg.onend = function() {
+
+        $('#gif').hide();
+<!--        record();-->
+      };
+      }
+    });
+
+     $('#message').val('');
+      }
+        </script>
+    </div>
+  </body>
+</html>
